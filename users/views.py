@@ -1,4 +1,6 @@
-from django.contrib.auth import login, authenticate· # import des fonctions login et authenticate
+from . import forms
+from django.shortcuts import render
+from django.contrib.auth import login, authenticate # import des fonctions login et authenticate
 
 
 def login_page(request):
@@ -8,13 +10,13 @@ def login_page(request):
         form = forms.LoginForm(request.POST)
         if form.is_valid():
             user = authenticate(
-                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
                 password=form.cleaned_data['password'],
             )
             if user is not None:
                 login(request, user)
-                message = f'Bonjour, {user.username}! Vous êtes connecté.'
+                message = f'Hello, {user.username}! You are Logged In.'
             else:
-                message = 'Identifiants invalides.'
+                message = 'Username or password are incorrect.'
     return render(
-        request, 'authentication/login.html', context={'form': form, 'message': message})
+        request, 'users/login.html', context={'form': form, 'message': message})
