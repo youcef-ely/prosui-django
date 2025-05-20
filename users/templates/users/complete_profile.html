@@ -1,0 +1,55 @@
+{% extends 'base_authenticated.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+<form method="post" enctype="multipart/form-data", class="register-form">
+
+    {% csrf_token %}
+
+    <h2 style="text-align:center">Complete Your Profile</h2>
+
+    <img src="{{ user.profile_photo.url }}" alt="Profile Image" style="width: 150px; height: auto; border-radius: 50%;">
+        
+        <div class="upload-photo">
+            {{ form.profile_photo }}  <!-- Keep this for functionality, we'll hide it with CSS -->
+            
+            <!-- Label for the hidden file input -->
+            <label for="{{ form.profile_photo.id_for_label }}" class="upload-link">
+                Set new profile photo
+            </label>
+        </div>
+
+    
+    <div class="txtb">
+        {{ form.first_name.label_tag }}  
+        {{ form.first_name }}
+    </div>
+
+    <div class="txtb">
+        {{ form.last_name.label_tag }}  
+        {{ form.last_name }}
+    </div>
+
+    <div class="txtb">
+        {{ form.phone_number.label_tag }}  
+        {{ form.phone_number }}
+    </div>
+
+    
+
+    <div class="txtb">
+        {{ form.new_password.label_tag }}  
+        {{ form.new_password }}
+    </div>
+
+    <div class="txtb">
+        {{ form.confirm_password.label_tag }}  
+        {{ form.confirm_password }}
+    </div>
+
+    <button type="submit" class="logbtn">Save and Continue</button>
+</form>
+{% endblock content %}

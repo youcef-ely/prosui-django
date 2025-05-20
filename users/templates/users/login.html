@@ -1,10 +1,32 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-    <p> Login Page <p>
-        <p>{{ message }}</p>
-    <form method="post">
-        {{ form.as_p }}
+    <form method="post" class="register-form">
         {% csrf_token %}
-        <button type="submit" >Log in</button>
+        <div class="logo">
+            <h1 style="text-align:center">PRO<span>SUI</span></h1> 
+        </div>
+
+        <div class="txtb">
+            {{ form.email.label_tag }}  
+            {{ form.email }}
+        </div>
+
+        <div class="txtb">
+            {{ form.password.label_tag }}  
+            {{ form.password }}
+        </div>
+
+        <button type="submit" class="logbtn">Log in</button>
     </form>
+
+    <!-- JavaScript to Display the Alert -->
+    {% if message %}
+    <script type="text/javascript">
+        window.onload = function() {
+            alert("{{ message }}");
+        }
+    </script>
+    {% endif %}
 {% endblock content %}

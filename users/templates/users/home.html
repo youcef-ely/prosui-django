@@ -1,0 +1,13 @@
+{% extends 'base_authenticated.html' %}
+{% load static %}
+
+
+{% block content %}
+      <!-- Include the header inside the block -->
+
+    <div class="welcome-message">
+        <p>Welcome {{ user.first_name }} {{ user.last_name }}</p>
+
+        
+    </div>
+{% endblock content %}

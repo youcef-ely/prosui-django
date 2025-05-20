@@ -1,0 +1,36 @@
+{% extends 'base_authenticated.html' %}
+{% load static %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-card">
+        <!-- Profile Photo -->
+        {% if user.profile_photo %}
+            <img src="{{ user.profile_photo.url }}" alt="Profile Photo" class="profile-photo">
+        {% else %}
+            <img src="{% static 'images/default-avatar.png' %}" alt="Default Avatar" class="profile-photo">
+        {% endif %}
+        
+        <!-- User Information -->
+        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Phone Number:</strong> {{ user.phone_number|default:"Not provided" }}</p>
+        <p><strong>Role:</strong> {{ user.get_role_display }}</p>
+
+        <!-- Supervisor Information (if applicable) -->
+        {% if user.supervisor %}
+            <p><strong>Supervisor:</strong> {{ user.supervisor.first_name }} {{ user.supervisor.last_name }}</p>
+        {% endif %}
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="" class="">Edit Profile</a>
+            <a href="" class="">Change Password</a>
+        </div>
+
+
+        
+    </div>
+</div>
+{% endblock %}

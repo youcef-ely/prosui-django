@@ -1,0 +1,14 @@
+<header class="main-header">
+    <nav>
+        <ul>
+            {% if not user.first_login %}
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'my_profile' %}">My profile</a></li>
+                <li><a href="{% url 'logout_user' %}">LogOut</a></li>
+            {% else %}
+                <li><a href="{% url 'logout_user' %}">LogOut</a></li>
+            {% endif %}
+
+        </ul>
+    </nav>
+</header>
