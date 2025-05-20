@@ -4,9 +4,11 @@
 {% block content %}
     <form method="post" class="register-form">
         {% csrf_token %}
-        <div class="logo">
-            <h1 style="text-align:center">PRO<span>SUI</span></h1> 
+        <div style="text-align: center;">
+            <img src="{% static 'users/images/logo.png' %}" alt="PROSUI Logo" style="width: 200px; height: auto;">
         </div>
+
+
 
         <div class="txtb">
             {{ form.email.label_tag }}  
@@ -21,12 +23,5 @@
         <button type="submit" class="logbtn">Log in</button>
     </form>
 
-    <!-- JavaScript to Display the Alert -->
-    {% if message %}
-    <script type="text/javascript">
-        window.onload = function() {
-            alert("{{ message }}");
-        }
-    </script>
-    {% endif %}
+    
 {% endblock content %}

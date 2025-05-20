@@ -1,29 +1,39 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:500');
+
 /* Global Styling */
 body {
-    font-family: Arial, sans-serif;
-    background: url("../images/background_image.jpg") no-repeat fixed;
-
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f4f6f8;
     display: flex;
     justify-content: center;
-    padding-top: 60px;
     align-items: center;
-    height: 100vh;
+    padding-top: 100px;
+    min-height: 100vh;
     margin: 0;
 }
 
 .register-form {
     background-color: #ffffff;
-    width: 400px;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    margin: 20px;
 }
 
-.form-title {
+.register-form .form-title {
     text-align: center;
     margin-bottom: 20px;
     font-size: 24px;
-    color: #333;
+    font-weight: 600;
+    color: #222;
+}
+
+.logo img {
+    display: block;
+    max-width: 150px;
+    margin: auto;
 }
 
 .txtb {
@@ -32,199 +42,129 @@ body {
 
 .txtb label {
     font-size: 14px;
-    color: #666;
-    margin-bottom: 5px;
+    color: #555;
     display: block;
+    margin-bottom: 6px;
 }
 
 .txtb input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 6px;
     background-color: #f9f9f9;
     font-size: 14px;
 }
 
 .logbtn {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background-color: #4CAF50;
     border: none;
     color: white;
     font-size: 16px;
-    border-radius: 5px;
+    font-weight: 600;
+    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-top: 10px;
 }
 
 .logbtn:hover {
     background-color: #45a049;
 }
 
-
-
-/* Header Styling */
-.main-header {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 0;
-    text-align: center;
+.upload-photo input[type="file"] {
+    display: none;
 }
 
-.main-header nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-.main-header nav ul li {
-    display: inline;
-    margin-right: 15px;
-}
-
-.main-header nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.1em;
-}
-
-.main-header nav ul li a:hover {
+.upload-link {
+    display: inline-block;
+    color: #007bff;
     text-decoration: underline;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 5px;
 }
 
-
-.profile-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
+.upload-link:hover {
+    color: #0056b3;
 }
 
-.profile-card {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    width: 400px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.upload-photo label[for$="-clear_id"] {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
 }
 
-.profile-photo {
-    width: 150px;
-    height: 150px;
+img[alt="Profile Image"] {
+    display: block;
+    margin: 10px auto;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    margin-bottom: 15px;
     object-fit: cover;
 }
 
-.profile-card h2 {
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.profile-card p {
-    margin-bottom: 8px;
-    font-size: 14px;
-    color: #666;
-}
-
-.action-buttons {
-    margin-top: 20px;
+/* Header Styling */
+.main-header {
+    background-color: #ffffff;
+    color: #222;
+    padding: 10 1%;
     display: flex;
     justify-content: space-between;
-}
-
-.action-buttons .btn {
-    text-decoration: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    color: white;
-    display: inline-block;
-    width: 48%;
-    text-align: center;
-}
-
-.btn-primary {
-    background-color: #4CAF50;
-}
-
-.btn-secondary {
-    background-color: #2196F3;
-}
-
-.btn-primary:hover {
-    background-color: #45a049;
-}
-
-.btn-secondary:hover {
-    background-color: #1e88e5;
-}
-
-
-/* ===========================
-    Header Styling
-=========================== */
-.main-header {
-    background-color: grey;
-    color: black;
-    padding: 15px 0;
-    text-align: center;
-    position: fixed;    /* <-- Fixes it to the top */
+    align-items: center;
+    position: fixed;
     width: 100%;
     top: 0;
     left: 0;
     z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    font-family: 'Montserrat', sans-serif;
 }
+
+
 
 .main-header nav ul {
-    list-style-type: none;
+    list-style: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
-}
-
-.main-header nav ul li {
-    display: inline;
-    margin-right: 15px;
+    display: flex;
+    gap: 20px;
 }
 
 .main-header nav ul li a {
-    color: white;
+    color: #222;
     text-decoration: none;
     font-size: 1.1em;
+    padding: 8px 12px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 4px;
 }
 
 .main-header nav ul li a:hover {
-    text-decoration: underline;
+    background-color: #ddd;
+    color: #000;
 }
 
+@media (max-width: 768px) {
+    .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-/* ===========================
-    Footer Styling
-=========================== */
-.main-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 15px 0;
-    position: relative;
-    width: 100%;
-    margin-top: 50px;
-    bottom: 0;
-    left: 0;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    .main-header nav ul {
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .main-header nav ul li a {
+        width: 100%;
+        display: block;
+    }
 }
 
-.main-footer p {
-    margin: 0;
-    font-size: 14px;
-}
-
-/* For sticky behavior on short pages */
 html {
     min-height: 100%;
     position: relative;
@@ -232,28 +172,36 @@ html {
 
 
 
-/* Hide the actual file input */
+
+.photo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-photo {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4CAF50;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 .upload-photo input[type="file"] {
-  display: none;
+    display: none;
 }
 
-/* Style the label to look like a link */
 .upload-link {
-  display: inline-block;
-  color: #007bff;           /* Bootstrap-like link blue */
-  text-decoration: underline;
-  cursor: pointer;
-  font-size: 14px;
-  margin-top: 5px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #007bff;
+    text-decoration: underline;
+    cursor: pointer;
+    text-align: center;
 }
 
-/* Optional: hover effect */
 .upload-link:hover {
-  color: #0056b3;
-}
-
-.upload-photo label[for$="-clear_id"] {
-    color: red;
-    font-size: 12px;
-    margin-top: 5px;
+    color: #0056b3;
 }

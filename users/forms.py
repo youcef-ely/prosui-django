@@ -1,14 +1,15 @@
 # forms.py
+import pretty_errors
 from django import forms
 from .models import CustomUser
-from django.contrib.auth import password_validation
 from django.utils.safestring import mark_safe
-from django.core.validators import RegexValidator
-from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
+from django.contrib.auth import password_validation
+from phonenumber_field.formfields import PhoneNumberField
 
 
 
 class LoginForm(forms.Form):
+
     email = forms.EmailField(widget=forms.EmailInput(attrs={
         'class': 'form-control',
         'placeholder': 'Enter your email'
@@ -21,32 +22,38 @@ class LoginForm(forms.Form):
 
 class CompleteProfileForm(forms.ModelForm):
 
-    image = forms.ImageField()
-    
-    phone_number = forms.CharField(
-        max_length=13,  # Adjust based on your needs
-        validators=[
-            RegexValidator(
-                regex=r'^\+?1?\d{9,15}$',  # Example regex for international phone numbers
-                message="Phone number must be entered in the format: '+999999999'. Up to 13 digits allowed."
-            )
-        ]
+    username = forms.CharField(
+        label='Username',
+        disabled=True,  
+        required=False
     )
+  
+    email = forms.EmailField(
+        label='Email',
+        disabled=True,
+        required=False
+    )
+   
+    phone_number = PhoneNumberField(region="MA")
 
-
-    profile_photo = forms.ImageField(required=False)
+    profile_photo = forms.ImageField(
+        required=False,
+        widget = forms.FileInput(
+            attrs = {"id" : "image_field" }
+        )
+    )
 
     # Add password fields
     new_password = forms.CharField(
         label="New password",
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'New password'}),
-        required=False,
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        required=True,
         help_text=mark_safe('<br>'.join(password_validation.password_validators_help_texts())),
     )
     confirm_password = forms.CharField(
         label="Confirm new password",
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm new password'}),
-        required=False,
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        required=True,
     )
 
     class Meta:
@@ -73,7 +80,7 @@ class CompleteProfileForm(forms.ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
 
-        pw1 = self.cleaned_data.get("new_password1")
+        pw1 = self.cleaned_data.get("new_password")
         if pw1:
             user.set_password(pw1)  # set new password properly
 

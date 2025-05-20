@@ -3,7 +3,7 @@ from datetime import date
 from django.db import models
 from django.utils.crypto import get_random_string
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import RegexValidator
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class CustomUser(AbstractUser):
@@ -25,16 +25,7 @@ class CustomUser(AbstractUser):
                                       upload_to="profile_pictures", 
                                       default="profile_pictures/base_avatar.jpg")
     
-    phone_number = models.CharField(
-        null=True,
-        max_length=13,  # Adjust based on your needs
-        validators=[
-            RegexValidator(
-                regex=r'^\+?1?\d{9,15}$',  # Example regex for international phone numbers
-                message="Phone number must be entered in the format: '+999999999'. Up to 13 digits allowed."
-            )
-        ]
-    )
+    phone_number = PhoneNumberField(blank=True)
     first_login = models.BooleanField(default=True)  
 
     # REQUIRED_FIELDS should NOT include 'email'

@@ -1,55 +1,108 @@
 {% extends 'base_authenticated.html' %}
 {% load static %}
 
-
 {% block content %}
 
-
-<form method="post" enctype="multipart/form-data", class="register-form">
-
+<form method="post" enctype="multipart/form-data" class="register-form">
     {% csrf_token %}
 
     <h2 style="text-align:center">Complete Your Profile</h2>
 
-    <img src="{{ user.profile_photo.url }}" alt="Profile Image" style="width: 150px; height: auto; border-radius: 50%;">
-        
+    <!-- Display non-field errors -->
+    {% if form.non_field_errors %}
+        <div class="error">
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="photo-section">
+        <img id="preview-photo" src="{{ user.profile_photo.url }}" alt="Profile Image" class="profile-photo">
+
         <div class="upload-photo">
-            {{ form.profile_photo }}  <!-- Keep this for functionality, we'll hide it with CSS -->
-            
-            <!-- Label for the hidden file input -->
+            {{ form.profile_photo }}
             <label for="{{ form.profile_photo.id_for_label }}" class="upload-link">
                 Set new profile photo
             </label>
+            {% for error in form.profile_photo.errors %}
+                <div class="error">{{ error }}</div>
+            {% endfor %}
         </div>
+    </div>
 
-    
+    <div class="txtb">
+        {{ form.username.label_tag }}
+        {{ user.username }}
+    </div>
+
+    <div class="txtb">
+        {{ form.email.label_tag }}
+        {{ user.email }}
+    </div>
+
     <div class="txtb">
         {{ form.first_name.label_tag }}  
         {{ form.first_name }}
+        {% for error in form.first_name.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
     </div>
 
     <div class="txtb">
         {{ form.last_name.label_tag }}  
         {{ form.last_name }}
+        {% for error in form.last_name.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
     </div>
 
     <div class="txtb">
         {{ form.phone_number.label_tag }}  
         {{ form.phone_number }}
+        {% for error in form.phone_number.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
     </div>
 
-    
-
     <div class="txtb">
-        {{ form.new_password.label_tag }}  
+        {{ form.new_password.label_tag }}
         {{ form.new_password }}
+        <small>{{ form.new_password.help_text }}</small>
+        {% for error in form.new_password.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
     </div>
 
     <div class="txtb">
         {{ form.confirm_password.label_tag }}  
         {{ form.confirm_password }}
+        {% for error in form.confirm_password.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
     </div>
 
     <button type="submit" class="logbtn">Save and Continue</button>
 </form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const fileInput = document.getElementById("{{ form.profile_photo.id_for_label }}");
+    const previewImage = document.getElementById("preview-photo");
+
+    if (fileInput) {
+        fileInput.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith("image/")) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+</script>
+
 {% endblock content %}
