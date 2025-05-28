@@ -1,0 +1,13 @@
+{% load static %}
+
+<aside class="sidebar">
+  <nav>
+    {% if user.role == 'supervisor' %}
+        <ul class="sidebar-menu">
+            <li><a href="{% url 'my_projects' %}">My Projects</a></li>
+            <li><a href="{% url 'my_team_members' %}">My Team Members</a></li>
+            <li><a href="#">Contact the Support</a></li>
+        </ul>
+    {% endif %}
+  </nav>
+</aside>

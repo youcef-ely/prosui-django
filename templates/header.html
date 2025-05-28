@@ -1,0 +1,27 @@
+{% load static %}
+
+<header class="main-header">
+    <div class="logo">
+        <img src="{% static 'images/logo.png' %}" alt="PROSUI Logo" class="header-logo-image">
+    </div>
+
+    <nav>
+        <ul>
+            {% if not user.first_login %}
+                <li><a href="{% url 'home' %}">Home</a></li>
+
+                <li>
+                    <a href="{% url 'my_profile' %}" class="profile-link">
+                        <img src="{% if user.profile_photo %}{{ user.profile_photo.url }}{% else %}{% static 'images/base_avatar.jpg' %}{% endif %}"
+                             alt="" class="profile-photo-small">
+                        My Profile
+                    </a>
+                </li>
+
+                <li><a href="{% url 'logout_user' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'logout_user' %}">Logout</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

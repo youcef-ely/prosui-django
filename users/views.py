@@ -1,11 +1,17 @@
 import pretty_errors
-
 from . import forms
+from .models import CustomUser
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import update_session_auth_hash 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
+from .forms import CustomPasswordChangeForm
+from django.contrib.auth import get_user_model
+
+
 
 
 
@@ -16,22 +22,30 @@ def login_page(request):
     """
     form = forms.LoginForm()
     message = ''
-    
+    User = get_user_model()
+
     if request.method == 'POST':
         form = forms.LoginForm(request.POST)
         if form.is_valid():
-            user = authenticate(
-                email=form.cleaned_data['email'],
-                password=form.cleaned_data['password'],
-            )
-            if user is not None:
-                login(request, user)  # <- You forgot to log in the user
-                if user.first_login:  # No need to compare with '== True'
-                    return redirect('complete_profile')
-                return redirect('home')
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                message = "No user found with this email address."
             else:
-                message = 'Username or password are incorrect.'
+                user = authenticate(email=email, password=password)
+                if user is not None:
+                    login(request, user)
+                    if user.first_login:
+                        return redirect('complete_profile')
+                    return redirect('home')
+                else:
+                    message = "Incorrect password."
+
     return render(request, 'users/login.html', context={'form': form, 'message': message})
+
 
 
 @login_required
@@ -52,39 +66,71 @@ def logout_user(request):
 
 @login_required
 def complete_profile(request):
-    """
-    View to complete the user profile if it's the first login.
-    """
-    user = request.user
-    form = forms.CompleteProfileForm(request.POST or None, request.FILES or None, instance=user)
-
-    if request.method == 'POST':
+    if request.method == "POST":
+        form = forms.CompleteProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
-            # Update user info
-            form.save(commit=False)
-            user.first_login = False
-
-            # Password change logic
-            new_password = request.POST.get('new_password')
-            confirm_password = request.POST.get('confirm_password')
-
-            if new_password or confirm_password:
-                if new_password != confirm_password:
-                    messages.error(request, "Passwords do not match.")
-                    return render(request, 'users/complete_profile.html', {'form': form})
-                if user.check_password(new_password):
-                    messages.warning(request, "New password must be different from the current one.")
-                    return render(request, 'users/complete_profile.html', {'form': form})
-                user.set_password(new_password)
-                update_session_auth_hash(request, user)
-
-            user.save()
-            messages.success(request, "Profile updated successfully.")
+            form.save()
+            request.user.first_login = False
+            request.user.save(update_fields=['first_login'])
             return redirect('home')
+    else:
+        form = forms.CompleteProfileForm(instance=request.user)  
 
-    return render(request, 'users/complete_profile.html', {'form': form})
+    return render(request, "users/complete_profile.html", {"form": form})
+
+
 
 
 @login_required
 def my_profile(request):
     return render(request, 'users/my_profile.html')
+
+
+
+@login_required
+def my_team(request):
+    """
+    View to display the user's team.
+    """
+    user = request.user
+    if user.role == 'supervisor':
+        # Fetch the team members for the supervisor
+        team_members = CustomUser.objects.filter(supervisor=user)
+        
+    else:
+        # If not a supervisor, redirect or show an error
+        messages.error(request, "You do not have permission to view this page.")
+        return redirect('home')
+
+    return render(request, 'users/my_team.html', {'team_members': team_members})
+
+
+@login_required
+def update_profile(request):
+    """
+    View to update the user's profile.
+    """
+    if request.method == 'POST':
+        form = forms.UpdateProfileForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, "Profile updated successfully.")
+            return redirect('my_profile')
+    else:
+        form = forms.UpdateProfileForm(instance=request.user)
+
+    return render(request, 'users/update_profile.html', {'form': form})
+
+
+class CustomPasswordChangeView(PasswordChangeView):
+    form_class = CustomPasswordChangeForm
+    template_name = 'users/change_password.html'
+    success_url = reverse_lazy('password_change_done')
+
+
+@login_required
+def member_details(request, pk):
+    member = CustomUser.objects.get(pk=pk)
+    return render(request, 'users/member_details.html', {'member': member})

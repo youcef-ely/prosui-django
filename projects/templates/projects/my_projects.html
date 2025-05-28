@@ -1,0 +1,67 @@
+{% extends 'base_authenticated.html' %}
+{% load static %}
+
+
+{% block title %}My Projects{% endblock %}
+
+{% block content %}
+
+
+<div class="projects-page-header">
+    <div class="search-bar">
+        <div class="search-icon-input">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.5" stroke="currentColor" class="search-icon">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <input type="text" placeholder="Search..">
+        </div>
+    </div>
+    <ul>
+        <li>Filter</li>       
+        <li><a href="{% url 'create_project' %}">New</a></li>
+    </ul>
+</div>
+
+
+
+    {% if message %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endif %}
+
+{% if my_projects %}
+    <div class="project-list">
+        {% for project in my_projects %}
+            <div class="project-item">
+                <div class="project-logo">
+                    <img src="{% if project.image %}{{ project.image.url }}{% else %}{% static 'images/project_icon.png' %}{% endif %}"
+                         class="project-logo-img">
+                </div>
+                <div class="project-details">
+                    <h3 class="project-title">{{ project.name }}</h3>
+                    <p class="project-description">{{ project.description }}</p>
+                    <p class="project-status">Status: {{ project.get_status_display }}</p>
+                    <p class="project-created-at">Created at: {{ project.created_at|date:"Y-m-d H:i" }}</p>
+                        <a href="#" class="view-project-btn">View</a>
+                        <a href="#" class="view-project-btn">Edit</a>
+                        <form method="post" action="{% url 'delete_project' project.id %}" class="delete-project-form">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-project-btn">Delete</button>
+                    
+                </div>
+
+                  
+            </div>
+        {% endfor %}
+    </div>
+
+{% endif %}
+
+
+    
+
+
+{% endblock %}

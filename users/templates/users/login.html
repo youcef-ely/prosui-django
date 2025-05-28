@@ -2,26 +2,67 @@
 {% load static %}
 
 {% block content %}
-    <form method="post" class="register-form">
-        {% csrf_token %}
-        <div style="text-align: center;">
-            <img src="{% static 'users/images/logo.png' %}" alt="PROSUI Logo" style="width: 200px; height: auto;">
+<div class="login-page">
+
+    <!-- Left side: Logo + Form -->
+    <div class="left-side">
+        <!-- Logo always top-left -->
+        <img src="{% static 'images/logo.png' %}" alt="PROSUI Logo" class="logo-img">
+
+        <!-- Centered form -->
+        <div class="login-form">
+                      
+            <form method="post">
+                <h2 style="text-align: center;">
+                    Welcome to PROSUI
+                </h2>  
+                {% csrf_token %}
+                <div class="txtb">
+                    {{ form.email.label_tag }}  
+                    {{ form.email }}
+                </div>
+
+                <div class="txtb">
+                    <label for="password">Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="password" name="password" style="padding-right: 30px;">
+                        
+                        <!-- Insert the SVG here -->
+                        <svg xmlns="http://www.w3.org/2000/svg" onclick="togglePassword()" 
+                            width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            style="position: absolute; top: 50%; right: 8px; transform: translateY(-50%); cursor: pointer;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-.002.007-.002.014 0 .021-.002.007-.002.014 0 .021C20.268 16.057 16.478 19 12 19c-4.478 0-8.268-2.943-9.542-7-.002-.007-.002-.014 0-.021z"/>
+                        </svg>
+                    </div>
+                </div>
+
+
+
+                <button type="submit" class="logbtn">Log in</button>
+                <a href="#"><div style="text-align: center; margin-top: 10px;">Forgot Password?</div></a>
+            </form>
         </div>
+    </div>
+
+    <!-- Right side: Background image -->
+    <div class="right-side">
+        <img src="{% static 'images/background_image.jpg' %}" alt="Background Image">
+    </div>
+</div>
+
+<script>
+    {% if message %}
+        alert("{{ message|escapejs }}");
+    {% endif %}
+
+    function togglePassword() {
+    const input = document.getElementById("password");
+    input.type = input.type === "password" ? "text" : "password";
+  }
+</script>
 
 
-
-        <div class="txtb">
-            {{ form.email.label_tag }}  
-            {{ form.email }}
-        </div>
-
-        <div class="txtb">
-            {{ form.password.label_tag }}  
-            {{ form.password }}
-        </div>
-
-        <button type="submit" class="logbtn">Log in</button>
-    </form>
-
-    
-{% endblock content %}
+{% endblock %}

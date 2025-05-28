@@ -1,0 +1,7 @@
+{% load static %}
+
+<form method="post" action="{% url 'add_task' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Task</button>
+</form>

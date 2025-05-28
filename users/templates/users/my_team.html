@@ -1,0 +1,39 @@
+{% extends 'base_authenticated.html' %}
+{% load static %}
+
+{% block content %}
+<table class="member-table">
+  {% for member in team_members %}
+    {% if forloop.counter0|divisibleby:3 %}
+      <tr>
+    {% endif %}
+    <td class="member-cell">
+      <!-- Profile Image -->
+      <img class="member-image" src="{{ member.image.url }}" alt="{{ member.name }}">
+
+      <div class="member-info">
+        <!-- Name and Job -->
+        <div class="member-name">{{ member.first_name }} {{ member.last_name }}</div>
+        <div class="member-job">{{ member.get_job_display }}</div>
+
+        <!-- Assigned Projects Count -->
+        <div class="member-projects">
+          Projects: {{ member.projects.count }}
+        </div>
+
+        <!-- Action Links -->
+        <div class="member-actions">
+          <a href="">View profile</a>
+          <a href="">Send a message</a>
+        </div>
+      </div>
+    </td>
+    {% if forloop.counter|divisibleby:3 %}
+      </tr>
+    {% endif %}
+  {% endfor %}
+  {% if not forloop.last and not forloop.counter|divisibleby:3 %}
+    </tr>
+  {% endif %}
+</table>
+{% endblock %}

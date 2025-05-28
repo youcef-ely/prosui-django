@@ -1,0 +1,90 @@
+{% extends "base_authenticated.html" %}
+{% load static %}
+
+{% block title %}Create Project{% endblock %}
+
+{% block content %}
+
+<form method="post" action="{% url 'create_project' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="create-project-form">
+        <h2>Create a New Project</h2>
+        <div class="form-body">
+            
+            <div class="project-icon">
+                <!-- Image Preview -->
+                <img id="project-photo-preview" src="{% static 'images/project_icon.png' %}" alt="Project Icon" style="object-fit:cover; border-radius: 8px; border: 1px solid #ccc;" />
+                
+                <!-- Hidden file input -->
+                <div class="image-upload" style="display:none;">
+                    {{ form.image }}
+                </div>
+
+                <!-- Custom trigger -->
+                <a href="#" id="set-project-photo-link" class="set-project-photo-link">Set a project photo</a>
+            </div>
+
+            <div class="form-fields">
+                <div class="txtb">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                </div>
+
+                <div class="txtb">
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+                </div>
+
+                <div class="form-dates">
+                    <div class="form-group">
+                        {{ form.start_date.label_tag }}
+                        {{ form.start_date }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.end_date.label_tag }}
+                        {{ form.end_date }}
+                    </div>
+                </div>
+
+                <div class="txtb">
+                    {{ form.client_name.label_tag }}
+                    {{ form.client_name }}
+                </div>
+
+                <div class="txtb" style="width: 95%;">
+                    
+                    {{ form.project_leader.label_tag }}
+                    {{ form.project_leader }}
+                </div>
+
+                <button type="submit" class="submit-btn">Create Project</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+  const fileInput = document.querySelector('.image-upload input[type="file"]');
+  const previewImg = document.getElementById('project-photo-preview');
+  const setPhotoLink = document.getElementById('set-project-photo-link');
+
+  // Open file dialog when link is clicked
+  setPhotoLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    fileInput.click();
+  });
+
+  // Show preview when image is selected
+  fileInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        previewImg.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+</script>
+
+{% endblock %}
